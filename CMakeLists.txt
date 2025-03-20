@@ -18,4 +18,6 @@ target_sources(qml-expression PRIVATE
 	src/formatter.cpp
 )
 
-target_include_directories(qml-expression PUBLIC include)
+target_include_directories(qml-expression PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
