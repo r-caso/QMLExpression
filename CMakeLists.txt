@@ -19,44 +19,51 @@ target_sources(QMLExpression PRIVATE
     src/formatter.cpp
 )
 
-# Proper include paths for build and install
 target_include_directories(QMLExpression PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
 )
 
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+# Set up installation paths (customize as needed)
+include(GNUInstallDirs)
 
-# Install rules
-install(TARGETS QMLExpression EXPORT QMLExpressionTargets
-    LIBRARY DESTINATION lib
-    ARCHIVE DESTINATION lib
-    RUNTIME DESTINATION bin
-    INCLUDES DESTINATION include
+# Install the library binary
+install(TARGETS QMLExpression
+    EXPORT QMLExpressionTargets
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
-install(DIRECTORY include/ DESTINATION include)
+# Install the header files
+install(DIRECTORY include/
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
 
-# Export configuration
+# Export targets
 install(EXPORT QMLExpressionTargets
     FILE QMLExpressionTargets.cmake
     NAMESPACE QMLExpression::
-    DESTINATION lib/cmake/QMLExpression
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/QMLExpression
 )
 
+# Create and install package configuration files
 include(CMakePackageConfigHelpers)
 write_basic_package_version_file(
-    "${CMAKE_CURRENT_BINARY_DIR}/QMLExpressionConfigVersion.cmake"
+    QMLExpressionConfigVersion.cmake
     VERSION ${PROJECT_VERSION}
     COMPATIBILITY SameMajorVersion
 )
 
-install(FILES
-    "${CMAKE_CURRENT_BINARY_DIR}/QMLExpressionConfigVersion.cmake"
-    DESTINATION lib/cmake/QMLExpression
+configure_package_config_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/QMLExpressionConfig.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/QMLExpressionConfig.cmake
+    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/QMLExpression
 )
 
-configure_file(QMLExpressionConfig.cmake.in QMLExpressionConfig.cmake @ONLY)
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/QMLExpressionConfig.cmake"
-    DESTINATION lib/cmake/QMLExpression
+install(FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/QMLExpressionConfig.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/QMLExpressionConfigVersion.cmake
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/QMLExpression
 )
