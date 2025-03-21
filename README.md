@@ -10,7 +10,63 @@ This library is designed to work as an interface between parser libraries and se
 
 ![Intended parser-evaluator architecture](parser_evaluator_architecture.png)
 
-## Usage
+## Installation
+
+In order to build and install the library, navigate to the QMLExpression project root folder, and do the following:
+```bash
+mkdir build
+cd build
+cmake .. -DCMAKE_BUILD_TYPE=Relase
+cmake --build .
+```
+You can use `-DCMAKE_BUILD_TYPE=Debug` for a debug build.
+
+To install the QMLExpression as a system library:
+```bash
+cmake --install .
+```
+If you want to install it to a different location (non-system library), then specify the desired path:
+```bash
+cmake --install . --prefix /path/to/library_dir
+```
+
+## Usage in other projects
+
+To use the library in another project, you need to add the following line to the `CMakeLists.txt` of the project using the library:
+
+```cmake
+find_package(QMLExpression REQUIRED)
+```
+If you have installed the QMLExpression library in a non-standard path, you will need to tell CMake, either through the command line:
+```bash
+cmake [directory with the project\'s CMakeLists.txt] -DCMAKE_PREFIX_PATH=/path/to/QMLExpression
+```
+or by adding the corresponding key-value pair to the `cacheVariables` section of CMakePresets.json:
+```json
+{
+	...
+	"cacheVariables" : {
+		...
+		"CMAKE_PREFIX_PATH": "/path/to/QMLExpression"
+		...
+	}
+	...
+}
+```
+Then, you need to add the library includes to the include directories:
+```cmake
+target_include_directories(target_name PUBLIC
+    QMLExpression::QMLExpression
+    # other include directories
+)
+```
+Finally, link the library:
+```cmake
+target_link_libraries(target PUBLIC
+    QMLExpression::QMLExpression
+    # other libraries
+)
+```
 
 ### Expression
 
