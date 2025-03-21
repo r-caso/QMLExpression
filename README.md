@@ -83,38 +83,39 @@ You can check the declarations [here](include/expression.hpp). There you will fi
 A few examples:
 ```c++
 // constructing Term objects for use in building ASTs
+namespace QExpr = iif_sadaf::talk::QMLExpression;
 
-const Term x("x", istk::qml::Term::Type::VARIABLE);
-const Term y("y", istk::qml::Term::Type::VARIABLE);
-const Term a("a", istk::qml::Term::Type::CONSTANT);
+const QExpr::Term x("x", QExpr::Term::Type::VARIABLE);
+const QExpr::Term y("y", QExpr::Term::Type::VARIABLE);
+const QExpr::Term a("a", QExpr::Term::Type::CONSTANT);
 ```
 
 ```c++
 // constructing the variants
 
-const auto predication1 = std::make_shared<PredicationNode>(
+const auto predication1 = std::make_shared<QExpr::PredicationNode>(
 	"F",
-	std::vector<istk::qml::Term>{x}
+	std::vector<QExpr::Term>{x}
 );
 
-const auto predication2 = std::make_shared<PredicationNode>(
+const auto predication2 = std::make_shared<QExpr::PredicationNode>(
 	"G",
-	std::vector<istk::qml::Term>{x, a}
+	std::vector<QExpr::Term>{x, a}
 );
 
-const auto disjunction = std::make_shared<BinaryNode>(
-	istk::qml::Operator::DISJUNCTION,
+const auto disjunction = std::make_shared<QExpr::BinaryNode>(
+	QExpr::Operator::DISJUNCTION,
 	predication1,
 	predication2
 );
 
-const auto negation = std::make_shared<UnaryNode>(
-	istk::qml::Operator::NEGATION,
+const auto negation = std::make_shared<QExpr::UnaryNode>(
+	QExpr::Operator::NEGATION,
 	disjunction
 );
 
-const auto universal = std::make_shared<QuantificationNode>(
-	istk::qml::Quantifier::UNIVERSAL,
+const auto universal = std::make_shared<QExpr::QuantificationNode>(
+	QExpr::Quantifier::UNIVERSAL,
 	x,
 	predication1
 );
@@ -123,19 +124,19 @@ const auto universal = std::make_shared<QuantificationNode>(
 ```c++
 // turning the variants into Expression objects
 
-const Expression negation_expr(negation);
-const Expression universal_expr(negation);
+const QExpr::Expression negation_expr(negation);
+const QExpr::Expression universal_expr(negation);
 ```
 
 ### Formatter
 
 A formatter visitor for `Expression` objects is provided as well, with the purpose of being a quick way of rendering any `Expression` object as a QML formula. This visitor can be accessed directly:
 ```c++
-const std::string formula = std::visit(istk::QML::Formatter(), expr);
+const std::string formula = std::visit(QExpr::Formatter(), expr);
 ```
 It can also be accessed through the `format()` convenience function:
 ```c++
-const std::string formula = istk::QML::formt(expr);
+const std::string formula = QExpr::formt(expr);
 ```
 
 ## Contributing
