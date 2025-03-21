@@ -11,13 +11,52 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-add_library(qml-expression STATIC)
+# Define the static library
+add_library(QMLExpression STATIC)
 
-target_sources(qml-expression PRIVATE
-	src/expression.cpp
-	src/formatter.cpp
+target_sources(QMLExpression PRIVATE
+    src/expression.cpp
+    src/formatter.cpp
 )
 
-target_include_directories(qml-expression PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+# Proper include paths for build and install
+target_include_directories(QMLExpression PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+)
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
+# Install rules
+install(TARGETS QMLExpression EXPORT QMLExpressionTargets
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
+    RUNTIME DESTINATION bin
+    INCLUDES DESTINATION include
+)
+
+install(DIRECTORY include/ DESTINATION include)
+
+# Export configuration
+install(EXPORT QMLExpressionTargets
+    FILE QMLExpressionTargets.cmake
+    NAMESPACE QMLExpression::
+    DESTINATION lib/cmake/QMLExpression
+)
+
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file(
+    "${CMAKE_CURRENT_BINARY_DIR}/QMLExpressionConfigVersion.cmake"
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY SameMajorVersion
+)
+
+install(FILES
+    "${CMAKE_CURRENT_BINARY_DIR}/QMLExpressionConfigVersion.cmake"
+    DESTINATION lib/cmake/QMLExpression
+)
+
+configure_file(QMLExpressionConfig.cmake.in QMLExpressionConfig.cmake @ONLY)
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/QMLExpressionConfig.cmake"
+    DESTINATION lib/cmake/QMLExpression
+)
