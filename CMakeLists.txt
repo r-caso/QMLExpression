@@ -38,7 +38,7 @@ install(TARGETS QMLExpression
 
 # Install the header files
 install(DIRECTORY include/
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/QMLExpression
 )
 
 # Export targets
