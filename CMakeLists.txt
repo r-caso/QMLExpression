@@ -51,19 +51,26 @@ install(EXPORT QMLExpressionTargets
 # Create and install package configuration files
 include(CMakePackageConfigHelpers)
 write_basic_package_version_file(
-    QMLExpressionConfigVersion.cmake
+    "${CMAKE_CURRENT_BINARY_DIR}/QMLExpressionConfigVersion.cmake"
     VERSION ${PROJECT_VERSION}
     COMPATIBILITY SameMajorVersion
 )
 
+file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/QMLExpressionConfig.cmake.in"
+"@PACKAGE_INIT@
+
+include(\"\${CMAKE_CURRENT_LIST_DIR}/QMLExpressionTargets.cmake\")
+check_required_components(QMLExpression)
+")
+
 configure_package_config_file(
-    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/QMLExpressionConfig.cmake.in
-    ${CMAKE_CURRENT_BINARY_DIR}/QMLExpressionConfig.cmake
+    "${CMAKE_CURRENT_BINARY_DIR}/QMLExpressionConfig.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/QMLExpressionConfig.cmake"
     INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/QMLExpression
 )
 
 install(FILES
-    ${CMAKE_CURRENT_BINARY_DIR}/QMLExpressionConfig.cmake
-    ${CMAKE_CURRENT_BINARY_DIR}/QMLExpressionConfigVersion.cmake
+    "${CMAKE_CURRENT_BINARY_DIR}/QMLExpressionConfig.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/QMLExpressionConfigVersion.cmake"
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/QMLExpression
 )
