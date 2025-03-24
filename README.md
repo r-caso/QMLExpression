@@ -10,16 +10,57 @@ This library is designed to work as an interface between parser libraries and se
 
 ![Intended parser-evaluator architecture](parser_evaluator_architecture.png)
 
-## Installation
+## Overview
 
-In order to build and install the library, navigate to the QMLExpression project root folder, and do the following:
+The QMLExpression library has two main components:
+
+- an expression library that defined `Expression` objects
+- a convenience formatting library, that defines a `Formatter` visitor for `Expression` objects
+
+`Expression` objects are `std::variant` objects with any of the following possible values:
+
+- a `std::shared_ptr` to a `UnaryNode`
+- a `std::shared_ptr` to a `BinaryNode`
+- a `std::shared_ptr` to a `QuantificationNode`
+- a `std::shared_ptr` to an `IdentityNode`
+- a `std::shared_ptr` to a `PredicationNode`
+
+You can check the declarations [here](include/expression.hpp). There you will find as well a `Term` class for the singular terms of the language, which may be of type `Term::Type::VARIABLE` or `Term::Type::CONSTANT`.
+
+The `Formatter` visitor produces `std::string` representations of the provided `Expression` objects.
+
+## Directory structure
+
+```
+/
+├── include/           # Public headers
+└── src/               # Implementation files
+```
+
+## Build and install
+
+Clone the repository:
+```bash
+git clone git@github.com:r-caso/QMLExpression.git
+```
+
+### Prerequisites
+
+- C++23 compatible compiler
+- CMake 3.22 or newer
+
+### Building
+
+In order to build the library, navigate to the QMLExpression project root folder, and do the following:
 ```bash
 mkdir build
 cd build
-cmake .. -DCMAKE_BUILD_TYPE=Relase
+cmake ..
 cmake --build .
 ```
-You can use `-DCMAKE_BUILD_TYPE=Debug` for a debug build.
+You can use `cmake .. -DCMAKE_BUILD_TYPE=Relase` for a Release build, and `cmake .. -DCMAKE_BUILD_TYPE=Debug` for a Debug build.
+
+### Installing
 
 To install the QMLExpression as a system library:
 ```bash
@@ -30,7 +71,9 @@ If you want to install it to a different location (non-system library), then spe
 cmake --install . --prefix /path/to/library_dir
 ```
 
-## Usage in other projects
+## Usage
+
+### Inclusion in other CMake projects
 
 To use the library in another project, you need to add the following line to the `CMakeLists.txt` of the project using the library:
 
@@ -39,10 +82,10 @@ find_package(QMLExpression REQUIRED)
 ```
 If you have installed the QMLExpression library in a non-standard path, you will need to tell CMake, either through the command line:
 ```bash
-cmake [directory with the project\'s CMakeLists.txt] -DCMAKE_PREFIX_PATH=/path/to/QMLExpression
+cmake [directory containing CMakeLists.txt] -DCMAKE_PREFIX_PATH=/path/to/QMLExpression
 ```
 or by adding the corresponding key-value pair to the `cacheVariables` section of CMakePresets.json:
-```json
+```
 {
 	...
 	"cacheVariables" : {
@@ -53,32 +96,27 @@ or by adding the corresponding key-value pair to the `cacheVariables` section of
 	...
 }
 ```
-Then, you need to add the library includes to the include directories:
+Then, you need to link the library to your target:
 ```cmake
-target_include_directories(target_name PUBLIC
-    QMLExpression::QMLExpression
-    # other include directories
-)
-```
-Finally, link the library:
-```cmake
-target_link_libraries(target PUBLIC
+target_link_libraries(your_target [PUBLIC|PRIVATE]
     QMLExpression::QMLExpression
     # other libraries
 )
 ```
 
-### Expression
+### Declaring and formatting
 
-An `Expression` object is a `std::variant` with any of the following possible values:
+The different components of the QMLExpression library can be accessed through the following include directive:
+```c++
+#include <QMLExpression/expression.hpp>
+#include <QMLExpression/formatter.hpp>
+```
+Alternatively, you may include both components with a single header:
+```c++
+#include <QMLExpression/QMLExpression.hpp>
+```
 
-- a `std::shared_ptr` to a `UnaryNode`
-- a `std::shared_ptr` to a `BinaryNode`
-- a `std::shared_ptr` to a `QuantificationNode`
-- a `std::shared_ptr` to an `IdentityNode`
-- a `std::shared_ptr` to a `PredicationNode`
-
-You can check the declarations [here](include/expression.hpp). There you will find as well a `Term` class for the singular terms of the language, which may be of type `Term::Type::VARIABLE` or `Term::Type::CONSTANT`.
+#### Introducing `Expression` objects
 
 A few examples:
 ```c++
@@ -128,7 +166,7 @@ const QExpr::Expression negation_expr(negation);
 const QExpr::Expression universal_expr(negation);
 ```
 
-### Formatter
+#### Formatting `Expression` objects
 
 A formatter visitor for `Expression` objects is provided as well, with the purpose of being a quick way of rendering any `Expression` object as a QML formula. This visitor can be accessed directly:
 ```c++
