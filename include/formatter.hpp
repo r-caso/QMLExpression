@@ -10,6 +10,9 @@
 
 namespace iif_sadaf::talk::QMLExpression {
 
+/**
+ * @brief Provides string formatting for QML expressions.
+ */
 struct Formatter {
 	std::string operator()(std::shared_ptr<UnaryNode> expr) const;
 	std::string operator()(std::shared_ptr<BinaryNode> expr) const;

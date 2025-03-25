@@ -35,6 +35,11 @@ namespace {
     };
 }
 
+/**
+ * @brief Formats a unary node as a string.
+ * @param expr Shared pointer to a UnaryNode.
+ * @return The formatted string representation.
+ */
 std::string Formatter::operator()(std::shared_ptr<UnaryNode> expr) const
 {
     if (expr->op == Operator::NEGATION && std::holds_alternative<std::shared_ptr<IdentityNode>>(expr->scope)) {
@@ -50,6 +55,11 @@ std::string Formatter::operator()(std::shared_ptr<UnaryNode> expr) const
     );
 }
 
+/**
+ * @brief Formats a binary node as a string.
+ * @param expr Shared pointer to a BinaryNode.
+ * @return The formatted string representation.
+ */
 std::string Formatter::operator()(std::shared_ptr<BinaryNode> expr) const
 {
     return std::format("({} {} {})"
@@ -59,6 +69,11 @@ std::string Formatter::operator()(std::shared_ptr<BinaryNode> expr) const
     );
 }
 
+/**
+ * @brief Formats a quantification node as a string.
+ * @param expr Shared pointer to a QuantificationNode.
+ * @return The formatted string representation.
+ */
 std::string Formatter::operator()(std::shared_ptr<QuantificationNode> expr) const
 {
     return std::format("{}{} {}"
@@ -68,6 +83,11 @@ std::string Formatter::operator()(std::shared_ptr<QuantificationNode> expr) cons
     );
 }
 
+/**
+ * @brief Formats a predication node as a string.
+ * @param expr Shared pointer to a PredicationNode.
+ * @return The formatted string representation.
+ */
 std::string Formatter::operator()(std::shared_ptr<PredicationNode> expr) const
 {
     std::string argument_list;
@@ -84,6 +104,11 @@ std::string Formatter::operator()(std::shared_ptr<PredicationNode> expr) const
     );
 }
 
+/**
+ * @brief Formats an identity node as a string.
+ * @param expr Shared pointer to an IdentityNode.
+ * @return The formatted string representation.
+ */
 std::string Formatter::operator()(std::shared_ptr<IdentityNode> expr) const
 {
     return std::format("{} = {}"
@@ -92,6 +117,11 @@ std::string Formatter::operator()(std::shared_ptr<IdentityNode> expr) const
     );
 }
 
+/**
+ * @brief Formats a generic QML expression as a string.
+ * @param expr The expression to format.
+ * @return The formatted string representation.
+ */
 std::string format(const Expression& expr)
 {
     return std::visit(Formatter(), expr);

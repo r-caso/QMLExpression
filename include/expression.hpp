@@ -13,14 +13,20 @@
 
 namespace iif_sadaf::talk::QMLExpression {
 
+/**
+ * @brief Represents a term in a QML expression.
+ */
 struct Term {
+    /**
+     * @brief Enum representing the type of term.
+     */
     enum class Type : uint8_t {
         CONSTANT,
         VARIABLE
     };
 
-    std::string literal;
-    Type type;
+    std::string literal; /**< The string representation of the term. */
+    Type type;           /**< The type of the term (constant or variable). */
 };
 
 struct UnaryNode;
@@ -29,6 +35,9 @@ struct QuantificationNode;
 struct IdentityNode;
 struct PredicationNode;
 
+/**
+ * @brief Represents a generic QML expression using a variant type.
+ */
 using Expression = std::variant<
     std::shared_ptr<UnaryNode>,
     std::shared_ptr<BinaryNode>,
@@ -37,6 +46,9 @@ using Expression = std::variant<
     std::shared_ptr<PredicationNode>
 >;
 
+/**
+ * @brief Enum representing logical and modal operators.
+ */
 enum class Operator : uint8_t {
     NEGATION,
     CONJUNCTION, DISJUNCTION,
@@ -49,10 +61,17 @@ enum class Operator : uint8_t {
     NORMAL_NECESSITY, NORMAL_POSSIBILITY,
 };
 
+/**
+ * @brief Enum representing quantifiers in QML.
+ */
 enum class Quantifier : uint8_t {
     EXISTENTIAL,
     UNIVERSAL
 };
+
+/**
+ * @brief Represents a unary QML formula.
+ */
 
 struct UnaryNode {
     UnaryNode(Operator op, Expression scope);
@@ -61,6 +80,9 @@ struct UnaryNode {
     Expression scope;
 };
 
+/**
+ * @brief Represents a binary QML formula.
+ */
 struct BinaryNode {
     BinaryNode(Operator op, Expression lhs, Expression rhs);
 
@@ -69,6 +91,9 @@ struct BinaryNode {
     Expression rhs;
 };
 
+/**
+ * @brief Represents a quantified QML formula.
+ */
 struct QuantificationNode {
     QuantificationNode(Quantifier quantifier, Term variable, Expression scope);
 
@@ -77,6 +102,9 @@ struct QuantificationNode {
     Expression scope;
 };
 
+/**
+ * @brief Represents an identity atomic formula.
+ */
 struct IdentityNode {
     IdentityNode(Term lhs, Term rhs);
 
@@ -84,6 +112,9 @@ struct IdentityNode {
     Term rhs;
 };
 
+/**
+ * @brief Represents a predicative atomic formula.
+ */
 struct PredicationNode {
     PredicationNode(std::string predicate, std::vector<Term> arguments);
 
