@@ -25,25 +25,6 @@
 var NAVTREE =
 [
   [ "QMLExpression", "index.html", [
-    [ "QML Expression", "md__r_e_a_d_m_e.html", [
-      [ "Description", "md__r_e_a_d_m_e.html#description", null ],
-      [ "Overview", "md__r_e_a_d_m_e.html#overview", null ],
-      [ "Directory structure", "md__r_e_a_d_m_e.html#directory-structure", null ],
-      [ "Build and install", "md__r_e_a_d_m_e.html#build-and-install", [
-        [ "Prerequisites", "md__r_e_a_d_m_e.html#prerequisites", null ],
-        [ "Building", "md__r_e_a_d_m_e.html#building", null ],
-        [ "Installing", "md__r_e_a_d_m_e.html#installing", null ]
-      ] ],
-      [ "Usage", "md__r_e_a_d_m_e.html#usage", [
-        [ "Inclusion in other CMake projects", "md__r_e_a_d_m_e.html#inclusion-in-other-cmake-projects", null ],
-        [ "Declaring and formatting", "md__r_e_a_d_m_e.html#declaring-and-formatting", [
-          [ "Introducing Expression objects", "md__r_e_a_d_m_e.html#introducing-expression-objects", null ],
-          [ "Formatting Expression objects", "md__r_e_a_d_m_e.html#formatting-expression-objects", null ]
-        ] ]
-      ] ],
-      [ "Contributing", "md__r_e_a_d_m_e.html#contributing", null ],
-      [ "License", "md__r_e_a_d_m_e.html#license", null ]
-    ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
