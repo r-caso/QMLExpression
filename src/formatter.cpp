@@ -44,7 +44,7 @@ std::string Formatter::operator()(std::shared_ptr<UnaryNode> expr) const
 {
     if (expr->op == Operator::NEGATION && std::holds_alternative<std::shared_ptr<IdentityNode>>(expr->scope)) {
         std::string prejacent = std::visit(Formatter(), expr->scope);
-        const std::string::size_type pos = prejacent.find("=");
+        const std::string::size_type pos = prejacent.find('=');
         prejacent.replace(pos, 1, "≠");
         return prejacent;
     }
