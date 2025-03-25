@@ -34,7 +34,8 @@ The `Formatter` visitor produces `std::string` representations of the provided `
 ```
 /
 ├── include/           # Public headers
-└── src/               # Implementation files
+├── src/               # Implementation files
+└── docs/html          # Doxygen documentation
 ```
 
 ## Build and install
